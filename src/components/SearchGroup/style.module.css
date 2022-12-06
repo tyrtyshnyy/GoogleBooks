@@ -1,0 +1,11 @@
+/* .input {
+    width: 300px;
+    height: 100%;
+} */
+.wrapper {
+    /* max-width: 1000px; */
+}
+
+.column {
+    padding: 10px;
+}
