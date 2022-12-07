@@ -1,31 +1,47 @@
 import { Button, Col, Divider, Form, Input, Row, Select } from "antd";
+import { useState } from "react";
+import { bookApi } from "../../utils/service/GoogleBooks";
 import s from "./style.module.css";
 
 const { Option } = Select;
 
 interface FormResult {
-  textSearch: string;
+  nameBook: string;
 }
 const SearchGroup = () => {
-  const [searchForm] = Form.useForm();
+  const [searchBooksForm] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValue: FormResult = {
-    textSearch: "",
+    nameBook: "",
   };
 
-  const style: React.CSSProperties = { background: "#0092ff", padding: "8px" };
+  const getBooks = () => {
+    setIsLoading(true);
+    searchBooksForm
+      .validateFields()
+      .then((e: FormResult) => {
+        console.log(e.nameBook);
+        
+        bookApi.getAll(e.nameBook).then((result) => {
+          console.log(result);
+        });
+      })
+      
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className={s.wrapper}>
       <Form
         layout="horizontal"
-        form={searchForm}
+        form={searchBooksForm}
         initialValues={initialValue}
         // onValuesChange={onFormLayoutChange}
       >
         <Divider orientation="left">Поиск книг</Divider>
         <Row align="middle" justify="space-between">
-          <Col xs={17} sm={20} md={10} lg={10} xl={10}>
+          <Col xs={17} sm={20} md={20} lg={20} xl={20}>
             <div className={s.column}>
               <Form.Item
                 validateTrigger={"onBlur"}
@@ -36,7 +52,7 @@ const SearchGroup = () => {
                     message: "Пожалуйста введите текст",
                   },
                 ]}
-                name="textSearch"
+                name="nameBook"
               >
                 <Input placeholder="Поиск" className={s.input} size={"large"} />
               </Form.Item>
@@ -46,13 +62,13 @@ const SearchGroup = () => {
           <Col xs={7} sm={4} md={4} lg={4} xl={4}>
             <div className={s.column}>
               <Form.Item validateTrigger={"onBlur"} name="category">
-                <Button>Поиск</Button>
+                <Button onClick={getBooks}>Поиск</Button>
               </Form.Item>
             </div>
           </Col>
         </Row>
         <Row>
-          <Col xs={12} sm={12} md={5} lg={5} xl={5}>
+          <Col xs={10} sm={10} md={10} lg={10} xl={10}>
             <div className={s.column}>
               <Form.Item validateTrigger={"onBlur"} name="category">
                 <Select placeholder="Выбрать категорию" className={s.input}>
@@ -61,7 +77,7 @@ const SearchGroup = () => {
               </Form.Item>
             </div>
           </Col>
-          <Col xs={12} sm={12} md={5} lg={5} xl={5}>
+          <Col xs={10} sm={10} md={10} lg={10} xl={10}>
             <div className={s.column}>
               <Form.Item validateTrigger={"onBlur"} name="sortBy">
                 <Select placeholder="Сортировка по.." className={s.input}>

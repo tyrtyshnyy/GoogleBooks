@@ -1,3 +1,4 @@
+
 export type User = {
   aud: string;
   azp: string;
@@ -14,3 +15,17 @@ export type User = {
   picture: string;
   sub: string;
 };
+
+
+export type Book = {
+  authors: string[];
+  title: string;
+  subtitle: string;
+  publisher: string;
+  publishedDate: string;
+  image: string | undefined;
+  link: string;
+  rating: number;
+}
+
+
