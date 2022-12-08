@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+
 import { Book } from "../types";
-import { GoogleBook, GoogleBooksAPI, GoogleBooksAPIResults } from "./types";
+import { BookResults, GoogleBook, GoogleBooksAPI, GoogleBooksAPIResults } from "./types";
 
 class GoogleBooks implements GoogleBooksAPI {
   public static ConvertGoogleBookToBook(book: GoogleBook): Book {
@@ -37,8 +38,9 @@ class GoogleBooks implements GoogleBooksAPI {
   }
 
   public static ConvertGoogleBooksToBooks(books: GoogleBook[]): Book[] {
+    if (!books) return [];
+
     const convertedBooks: Book[] = [];
-    console.log(books);
 
     for (const b of books) {
       convertedBooks.push(GoogleBooks.ConvertGoogleBookToBook(b));
@@ -93,7 +95,7 @@ class GoogleBooks implements GoogleBooksAPI {
     category: string = "",
     sort: string = "relevance",
     startIndex: number = 0
-  ): Promise<Book[] | never> {
+  ): Promise<BookResults | never> {
     const url = `${this.apiUrl}?q=${encodeURI(
       query
     )}+subject:${category}&maxResults=${
@@ -106,14 +108,14 @@ class GoogleBooks implements GoogleBooksAPI {
 
     return axios
       .get<GoogleBooksAPIResults>(url)
-      .then((res: AxiosResponse<GoogleBooksAPIResults>): Book[] => {
-        if (res.data.totalItems === 0) {
-          throw new Error("Книг не найдено");
-        }
-        return GoogleBooks.ConvertGoogleBooksToBooks(res.data.items);
+      .then((res: AxiosResponse<GoogleBooksAPIResults>): BookResults => {
+        return {
+          totalItems: res.data.totalItems,
+          books: GoogleBooks.ConvertGoogleBooksToBooks(res.data.items),
+        };
       })
       .catch((axiosError: AxiosError): Promise<never> => {
-        console.error(axiosError.name, axiosError.message);
+        // console.error(axiosError.name, axiosError.message);
         return Promise.reject(axiosError);
       })
       .finally((): void => {
