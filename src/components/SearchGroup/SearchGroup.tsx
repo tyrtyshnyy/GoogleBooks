@@ -1,5 +1,6 @@
 import { Button, Col, Divider, Form, Input, Row, Select } from "antd";
 import { useState } from "react";
+
 import { bookApi } from "../../utils/service/GoogleBooks";
 import s from "./style.module.css";
 
@@ -7,6 +8,8 @@ const { Option } = Select;
 
 interface FormResult {
   nameBook: string;
+  sortBy?: string;
+  category?: string
 }
 const SearchGroup = () => {
   const [searchBooksForm] = Form.useForm();
@@ -21,14 +24,23 @@ const SearchGroup = () => {
     searchBooksForm
       .validateFields()
       .then((e: FormResult) => {
-        console.log(e.nameBook);
-        
-        bookApi.getAll(e.nameBook).then((result) => {
-          console.log(result);
-        });
+        console.log(e.category);
+
+        bookApi
+          .getAll(e.nameBook, e.category, e.sortBy)
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((e) => {
+            setIsLoading(false);
+            console.log("ошибка", e);
+          });
       })
-      
-      .catch((e) => console.log(e));
+
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
   };
 
   return (
@@ -72,7 +84,13 @@ const SearchGroup = () => {
             <div className={s.column}>
               <Form.Item validateTrigger={"onBlur"} name="category">
                 <Select placeholder="Выбрать категорию" className={s.input}>
-                  <Option>;</Option>
+                  <Option key="art">искусство</Option>
+                  <Option key="biography">биография</Option>
+                  <Option key="computers">компьютер</Option>
+                  <Option key="history">история</Option>
+                  <Option key="medical">медицина</Option>
+                  <Option key="poetry">искусство</Option>
+                  
                 </Select>
               </Form.Item>
             </div>
@@ -81,7 +99,8 @@ const SearchGroup = () => {
             <div className={s.column}>
               <Form.Item validateTrigger={"onBlur"} name="sortBy">
                 <Select placeholder="Сортировка по.." className={s.input}>
-                  <Option>;</Option>
+                  <Option key="relevance">релевантности</Option>
+                  <Option key="newest">новизне</Option>
                 </Select>
               </Form.Item>
             </div>

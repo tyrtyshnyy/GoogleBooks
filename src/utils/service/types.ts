@@ -1,6 +1,5 @@
 import { Book } from "../types";
 
-
 export interface IndustryIdentifier {
   type: string;
   identifier: string;
@@ -137,6 +136,11 @@ export type GoogleBooksAPIResults = {
   items: GoogleBook[];
 };
 
+export type BookResults = {
+  totalItems: number;
+  books: Book[]
+}
+
 export interface BookAPIConstructor {
   new (key?: string): BookAPI;
 }
@@ -147,7 +151,7 @@ export interface BookAPI {
     category: string,
     sort: string,
     startIndex: number
-  ): Promise<Book[]>,
+  ): Promise<BookResults>,
   getBookId(id: string): Promise<Book>
 }
 
