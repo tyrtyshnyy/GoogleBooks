@@ -1,19 +1,25 @@
 import { Button, Col, Divider, Form, Input, Row, Select } from "antd";
-import { useState } from "react";
+import { FC, useState } from "react";
 
+import { addBooks } from "../../store/bookSlice";
+import { useAppDispatch } from "../../utils/hook";
 import { bookApi } from "../../utils/service/GoogleBooks";
 import s from "./style.module.css";
 
 const { Option } = Select;
-
+interface SearchGroupProps {
+  startIndex: number;
+}
 interface FormResult {
   nameBook: string;
   sortBy?: string;
-  category?: string
+  category?: string;
 }
-const SearchGroup = () => {
+const SearchGroup: FC<SearchGroupProps> = ({ startIndex }) => {
   const [searchBooksForm] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const initialValue: FormResult = {
     nameBook: "",
@@ -29,7 +35,7 @@ const SearchGroup = () => {
         bookApi
           .getAll(e.nameBook, e.category, e.sortBy)
           .then((result) => {
-            console.log(result);
+            dispatch(addBooks(result))
           })
           .catch((e) => {
             setIsLoading(false);
@@ -90,7 +96,6 @@ const SearchGroup = () => {
                   <Option key="history">история</Option>
                   <Option key="medical">медицина</Option>
                   <Option key="poetry">искусство</Option>
-                  
                 </Select>
               </Form.Item>
             </div>
