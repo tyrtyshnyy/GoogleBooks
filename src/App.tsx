@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import BookId from "./components/BookId/BookId";
 import BooksList from "./components/BooksList/BooksList";
 
 import Books from "./pages/Books/Books";
@@ -18,7 +19,7 @@ function App() {
           {/* <Route path="/" element={<SignIn />}></Route> */}
           <Route path="/" element={<Books />}>
             <Route index element={<BooksList />} />
-            {/* <Route path=":id" element={<BookId />} /> */}
+            <Route path=":id" element={<BookId />} />
           </Route>
         </Routes>
       </BrowserRouter>

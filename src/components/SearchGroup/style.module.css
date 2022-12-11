@@ -1,9 +1,7 @@
-/* .input {
-    width: 300px;
-    height: 100%;
-} */
+
 .wrapper {
     max-width: 600px;
+    margin-bottom: 50px;
 }
 
 .column {

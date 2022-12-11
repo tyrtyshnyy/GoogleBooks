@@ -18,6 +18,7 @@ export type User = {
 
 
 export type Book = {
+  id: string
   authors: string[];
   title: string;
   subtitle: string;

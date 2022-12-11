@@ -1,27 +1,28 @@
 import { useOutletContext } from "react-router-dom";
-import { Book } from "../../utils/types";
 
+import { Book } from "../../utils/types";
+import BookItem from "../BookItem/BookItem";
 import s from "./style.module.css";
 
 interface OutletContext {
-    books: Book[], 
-    totalItems: number
+  books: Book[];
+  totalItems: number;
 }
 
 const BooksList = () => {
-  const {books, totalItems}: OutletContext = useOutletContext();
-
-  if (totalItems === 0) {
-    return <h1>Книг не найдено</h1>;
-  }
+  const { books, totalItems }: OutletContext = useOutletContext();
 
   return (
     <>
-      {totalItems && <h2>Всего найдено {totalItems} книг!</h2>}
+      {totalItems ? (
+        <h2 className={s.title}>Всего найдено {totalItems} книг!</h2>
+      ) : (
+        <h2 className={s.title}>Книг не найдено!</h2>
+      )}
       <div className={s.wrapper}>
-        {/* {books.map((book) => (
+        {books.map((book) => (
           <BookItem key={book.id} book={book} />
-        ))} */}
+        ))}
       </div>
     </>
   );

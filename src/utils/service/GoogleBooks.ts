@@ -26,6 +26,7 @@ class GoogleBooks implements GoogleBooksAPI {
     }
 
     return {
+      id: book.id,
       authors: book.volumeInfo.authors ? book.volumeInfo.authors : [],
       title: book.volumeInfo.title,
       subtitle: book.volumeInfo.subtitle,
@@ -125,7 +126,7 @@ class GoogleBooks implements GoogleBooksAPI {
 
   public getBookId(id: string): Promise<Book | never> {
     return axios
-      .get<GoogleBook>(`${id}`)
+      .get<GoogleBook>(`${this.apiUrl}/${id}`)
       .then((res: AxiosResponse<GoogleBook>): Book => {
         return GoogleBooks.ConvertGoogleOneBookToOneBook(res.data);
       })

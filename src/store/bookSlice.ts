@@ -3,16 +3,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BookResults } from "../utils/service/types";
 import { Book } from "../utils/types";
 
-type TodosState = {
+type BooksState = {
   books: Book[];
   totalItems: number;
   isLoading: boolean;
+  book: Book | Record<string, never>
 };
 
-const initialState: TodosState = {
+const initialState: BooksState = {
   books: [],
   totalItems: 0,
   isLoading: false,
+  book: {}
 };
 
 const bookSlice = createSlice({
@@ -22,6 +24,12 @@ const bookSlice = createSlice({
     addBooks(state, action: PayloadAction<BookResults>) {
       state.books.push(...action.payload.books);
       state.totalItems = action.payload.totalItems
+    },
+    loadingBooks(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload
+    },
+    addBook(state, action: PayloadAction<Book>) {
+      state.book = action.payload;
     },
     // toggleComplete(state, action: PayloadAction<string>) {
     //   const toggledTodo = state.list.find((todo) => todo.id === action.payload);
@@ -35,6 +43,6 @@ const bookSlice = createSlice({
   },
 });
 
-export const { addBooks } = bookSlice.actions;
+export const { addBooks, loadingBooks, addBook } = bookSlice.actions;
 
 export const bookReducer =  bookSlice.reducer;

@@ -1,7 +1,7 @@
 import { Button, Col, Divider, Form, Input, Row, Select } from "antd";
-import { FC, useState } from "react";
+import { FC } from "react";
 
-import { addBooks } from "../../store/bookSlice";
+import { addBooks, loadingBooks } from "../../store/bookSlice";
 import { useAppDispatch } from "../../utils/hook";
 import { bookApi } from "../../utils/service/GoogleBooks";
 import s from "./style.module.css";
@@ -15,9 +15,9 @@ interface FormResult {
   sortBy?: string;
   category?: string;
 }
-const SearchGroup: FC<SearchGroupProps> = ({ startIndex }) => {
+const SearchGroup: FC<SearchGroupProps> = ({ startIndex  }) => {
   const [searchBooksForm] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
+
 
   const dispatch = useAppDispatch();
 
@@ -26,7 +26,7 @@ const SearchGroup: FC<SearchGroupProps> = ({ startIndex }) => {
   };
 
   const getBooks = () => {
-    setIsLoading(true);
+    dispatch(loadingBooks(true))
     searchBooksForm
       .validateFields()
       .then((e: FormResult) => {
@@ -35,16 +35,18 @@ const SearchGroup: FC<SearchGroupProps> = ({ startIndex }) => {
         bookApi
           .getAll(e.nameBook, e.category, e.sortBy)
           .then((result) => {
+            dispatch(loadingBooks(false))
             dispatch(addBooks(result))
+            
           })
           .catch((e) => {
-            setIsLoading(false);
+            dispatch(loadingBooks(false))
             console.log("ошибка", e);
           });
       })
 
       .catch((e) => {
-        setIsLoading(false);
+
         console.log(e);
       });
   };
