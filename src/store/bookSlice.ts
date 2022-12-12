@@ -24,6 +24,7 @@ const bookSlice = createSlice({
     addBooks(state, action: PayloadAction<BookResults>) {
       state.books.push(...action.payload.books);
       state.totalItems = action.payload.totalItems
+      state.book = {}
     },
     loadingBooks(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload
@@ -31,6 +32,9 @@ const bookSlice = createSlice({
     addBook(state, action: PayloadAction<Book>) {
       state.book = action.payload;
     },
+    resetBook(state) {
+      state.book = {}
+    }
     // toggleComplete(state, action: PayloadAction<string>) {
     //   const toggledTodo = state.list.find((todo) => todo.id === action.payload);
     //   if (toggledTodo) {
@@ -43,6 +47,6 @@ const bookSlice = createSlice({
   },
 });
 
-export const { addBooks, loadingBooks, addBook } = bookSlice.actions;
+export const { addBooks, loadingBooks, addBook, resetBook } = bookSlice.actions;
 
 export const bookReducer =  bookSlice.reducer;

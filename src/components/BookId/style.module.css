@@ -1,0 +1,39 @@
+.BookId {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px
+
+}
+
+.paragraph {
+    display: block;
+    color: rgb(104, 80, 80);
+    text-decoration: underline;
+}
+.BookIdItem {
+    background-color: #e0dddd;
+    margin: 0 auto;
+}
+
+.BookIdInfo {
+    padding: 20px 15px;
+    background-color: #e0dddd;
+}
+.image {
+    max-width: 300px;
+    max-height: 450px;
+    padding: 50px;
+    
+}
+
+
+.description {
+    margin-bottom: 30px;
+
+}
+
+@media (max-width: 600px) {
+    .BookId {
+        grid-template-columns: 1fr;
+    }
+}

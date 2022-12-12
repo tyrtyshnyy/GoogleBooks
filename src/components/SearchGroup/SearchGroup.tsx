@@ -1,5 +1,6 @@
 import { Button, Col, Divider, Form, Input, Row, Select } from "antd";
 import { FC } from "react";
+import { NavigateFunction } from "react-router-dom";
 
 import { addBooks, loadingBooks } from "../../store/bookSlice";
 import { useAppDispatch } from "../../utils/hook";
@@ -9,13 +10,14 @@ import s from "./style.module.css";
 const { Option } = Select;
 interface SearchGroupProps {
   startIndex: number;
+  navigate: NavigateFunction
 }
 interface FormResult {
   nameBook: string;
   sortBy?: string;
   category?: string;
 }
-const SearchGroup: FC<SearchGroupProps> = ({ startIndex  }) => {
+const SearchGroup: FC<SearchGroupProps> = ({ startIndex, navigate  }) => {
   const [searchBooksForm] = Form.useForm();
 
 
@@ -37,7 +39,7 @@ const SearchGroup: FC<SearchGroupProps> = ({ startIndex  }) => {
           .then((result) => {
             dispatch(loadingBooks(false))
             dispatch(addBooks(result))
-            
+            navigate('../')
           })
           .catch((e) => {
             dispatch(loadingBooks(false))

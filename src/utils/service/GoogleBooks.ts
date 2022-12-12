@@ -23,6 +23,9 @@ class GoogleBooks implements GoogleBooksAPI {
       if (typeof image === "undefined") {
         image = book.volumeInfo.imageLinks.thumbnail;
       }
+
+      console.log(image);
+      
     }
 
     return {
@@ -35,6 +38,7 @@ class GoogleBooks implements GoogleBooksAPI {
       image,
       link: book.volumeInfo.infoLink,
       rating: book.volumeInfo.averageRating,
+      description: book.volumeInfo.description
     };
   }
 

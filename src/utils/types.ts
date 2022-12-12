@@ -1,5 +1,5 @@
 
-export type User = {
+export interface User {
   aud: string;
   azp: string;
   email: string;
@@ -17,7 +17,7 @@ export type User = {
 };
 
 
-export type Book = {
+export interface Book {
   id: string
   authors: string[];
   title: string;
@@ -27,6 +27,10 @@ export type Book = {
   image: string | undefined;
   link: string;
   rating: number;
+  description: string;
 }
+
+
+
 
 
